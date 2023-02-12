@@ -1,0 +1,17 @@
+{
+    "title": "FuelWatch WA",
+    "config": {
+        "step": {
+            "user": {
+                "title": "Add FuelWatch WA",
+                "description": "Adds the FuelWatch WA Integration",
+                "data": {
+                    "suburb": "Suburb"
+                },
+                "data_description": {
+                    "suburb": "The suburb that you want to use in FuelWatch WA"
+                }
+            }
+        }
+    }
+}
