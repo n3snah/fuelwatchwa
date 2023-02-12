@@ -3,6 +3,7 @@
     "name": "FuelWatch WA",
     "documentation": "https://github.com/n3snah/homeassistant-fuelwatchwa",
     "integration_type": "service",
+    "config_flow": true,
     "dependencies": [],
     "codeowners": ["@n3snah"],
     "requirements": ["fuelwatcher==0.2.2"],
