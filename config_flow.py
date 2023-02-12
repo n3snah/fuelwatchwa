@@ -23,7 +23,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         STEP_USER_DATA_SCHEMA= {
-            vol.Required("suburb", default="Kelmscott"): str
+            #vol.Required("suburb", default="Kelmscott"): str
+            vol.Required("suburb"): str
         }
 
         if user_input is not None:
