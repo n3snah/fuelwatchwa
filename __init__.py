@@ -1,10 +1,16 @@
 """The fuelwatchwa sensor integration."""
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import Platform
 
 from .const import DOMAIN
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Something"""
+DOMAIN = DOMAIN
+PLATFORMS = [Platform.SENSOR]
 
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up FuelWatch WA from a config entry"""
+    suburb: str = entry.data["suburb"]
+
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True

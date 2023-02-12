@@ -10,16 +10,17 @@ from homeassistant.const import CURRENCY_CENT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.config_entries import ConfigEntry
 
 
-def setup_platform(
+async def async_setup_entry(
     hass: HomeAssistant,
-    config: ConfigType,
-    add_entities: AddEntitiesCallback,
+    config: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None
 ) -> None:
     """Set up the sensor platform."""
-    add_entities([FuelPriceToday()])
+    async_add_entities([FuelPriceToday()])
 
 
 class FuelPriceToday(SensorEntity):

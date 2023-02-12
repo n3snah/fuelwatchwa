@@ -1,10 +1,12 @@
+from __future__ import annotations
+
+from typing import Any
+
 from homeassistant import config_entries
+from homeassistant.data_entry_flow import FlowResult
+
 from .const import DOMAIN
 import voluptuous as vol
-
-STEP_USER_DATA_SCHEMA= {
-            vol.Required("suburb"): str
-        }
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -16,11 +18,17 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def __init__(self):
         """Initialize the Config flow for FuelWatch WA"""
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         errors = {}
 
+        STEP_USER_DATA_SCHEMA= {
+            vol.Required("suburb", default="Kelmscott"): str
+        }
+
         if user_input is not None:
-            # Validate User input
+            # Validate User input.
+            # todo: add in validations
             valid = True
             if valid:
                 return self.async_create_entry(
