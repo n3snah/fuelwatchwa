@@ -1,17 +1,25 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
+import logging
+import voluptuous as vol
+
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
+    PLATFORM_SCHEMA
 )
 from homeassistant.const import CURRENCY_CENT
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 
+from fuelwatcher import FuelWatch, PRODUCT, REGION, BRAND, SUBURB
+from .const import DOMAIN
+
+_LOGGER = logging.getLogger(DOMAIN)
 
 async def async_setup_entry(
     hass: HomeAssistant,
