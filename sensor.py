@@ -34,7 +34,7 @@ async def async_setup_entry(
 class FuelPriceToday(SensorEntity):
     """Representation of a Sensor."""
 
-    _attr_name = "Fuel Price today"
+    _attr_name = "Cheapest Fuel Price today"
     _attr_native_unit_of_measurement = CURRENCY_CENT
     _attr_device_class = SensorDeviceClass.MONETARY
     _attr_state_class = SensorStateClass.MEASUREMENT
