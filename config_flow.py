@@ -24,7 +24,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         STEP_USER_DATA_SCHEMA= {
             #vol.Required("suburb", default="Kelmscott"): str
-            vol.Required("suburb"): str
+            vol.Required("suburb"): str,
+            vol.Required("product"): int,
+            vol.Required("day", default="today"): str
         }
 
         if user_input is not None:
