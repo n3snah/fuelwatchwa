@@ -21,12 +21,6 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(DOMAIN)
 
-fuel_info = {
-    "product": 6,
-    "suburb": 'Kelmscott',
-    "day": 'today'
-}
-
 async def async_setup_entry(
     hass: HomeAssistant,
     config: ConfigEntry,
@@ -34,7 +28,7 @@ async def async_setup_entry(
     discovery_info: DiscoveryInfoType | None = None
 ) -> None:
     """Set up the sensor platform."""
-    async_add_entities([FuelPriceToday()])
+    async_add_entities([FuelPriceToday(hass, config)])
 
 
 class FuelPriceToday(SensorEntity):
@@ -46,14 +40,15 @@ class FuelPriceToday(SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
     api = FuelWatch()
 
-    def __init__(self) -> None:
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        self._hass = hass
         self._attr_unique_id = 'sensor.fuelwatchwa_pricetoday'
         self.xml_query = None
         self._attr_native_value = None
 
-        self._fuel_type = fuel_info['product']
-        self._suburb = fuel_info['suburb']
-        self._day = fuel_info['day']
+        self._fuel_type = config_entries.data['product']
+        self._suburb = config_entries.data['suburb']
+        self._day = config_entries.data['day']
 
     @property
     def fuel_type(self) -> int:
