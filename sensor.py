@@ -28,7 +28,12 @@ async def async_setup_entry(
     discovery_info: DiscoveryInfoType | None = None
 ) -> None:
     """Set up the sensor platform."""
-    async_add_entities([FuelPriceToday(hass, config)])
+    async_add_entities([
+        FuelPriceToday(hass, config),
+        StationName(hass, config),
+        StationLocation(hass, config),
+        StationAddress(hass, config)
+    ])
 
 
 class FuelPriceToday(SensorEntity):
@@ -69,7 +74,123 @@ class FuelPriceToday(SensorEntity):
         """Fetch new state data for the sensor.
         This is the only method that should fetch new data for Home Assistant.
         """
-        #self._attr_native_value = 161.9
         self.api.query(product=self._fuel_type, suburb=self._suburb, day=self._day)
         self.xml_query = self.api.get_xml
         self._attr_native_value = self.xml_query[0]['price']
+
+class StationName(SensorEntity):
+    """Representation of a Sensor."""
+
+    _attr_name = "Station Name"
+    api = FuelWatch()
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        self._hass = hass
+        self._attr_unique_id = 'sensor.fuelwatchwa_stationname'
+        self.xml_query = None
+        self._attr_native_value = None
+
+        self._fuel_type = config_entries.data['product']
+        self._suburb = config_entries.data['suburb']
+        self._day = config_entries.data['day']
+
+    @property
+    def fuel_type(self) -> int:
+        """Return the Fuel Type specified"""
+        return self._fuel_type
+    
+    @property
+    def suburb(self) -> str:
+        """Return the Suburb for the fuel search"""
+        return self._suburb
+
+    @property
+    def day(self) -> str:
+        """Return the day of the fuel price"""
+        return self._day
+
+    def update(self) -> None:
+        """Fetch new state data for the sensor.
+        This is the only method that should fetch new data for Home Assistant.
+        """
+        self.api.query(product=self._fuel_type, suburb=self._suburb, day=self._day)
+        self.xml_query = self.api.get_xml
+        self._attr_native_value = self.xml_query[0]['brand']
+
+class StationLocation(SensorEntity):
+    """Representation of a Sensor."""
+
+    _attr_name = "Station Suburb"
+    api = FuelWatch()
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        self._hass = hass
+        self._attr_unique_id = 'sensor.fuelwatchwa_stationlocation'
+        self.xml_query = None
+        self._attr_native_value = None
+
+        self._fuel_type = config_entries.data['product']
+        self._suburb = config_entries.data['suburb']
+        self._day = config_entries.data['day']
+
+    @property
+    def fuel_type(self) -> int:
+        """Return the Fuel Type specified"""
+        return self._fuel_type
+    
+    @property
+    def suburb(self) -> str:
+        """Return the Suburb for the fuel search"""
+        return self._suburb
+
+    @property
+    def day(self) -> str:
+        """Return the day of the fuel price"""
+        return self._day
+
+    def update(self) -> None:
+        """Fetch new state data for the sensor.
+        This is the only method that should fetch new data for Home Assistant.
+        """
+        self.api.query(product=self._fuel_type, suburb=self._suburb, day=self._day)
+        self.xml_query = self.api.get_xml
+        self._attr_native_value = self.xml_query[0]['location']
+
+class StationAddress(SensorEntity):
+    """Representation of a Sensor."""
+
+    _attr_name = "Station Address"
+    api = FuelWatch()
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        self._hass = hass
+        self._attr_unique_id = 'sensor.fuelwatchwa_stationadress'
+        self.xml_query = None
+        self._attr_native_value = None
+
+        self._fuel_type = config_entries.data['product']
+        self._suburb = config_entries.data['suburb']
+        self._day = config_entries.data['day']
+
+    @property
+    def fuel_type(self) -> int:
+        """Return the Fuel Type specified"""
+        return self._fuel_type
+    
+    @property
+    def suburb(self) -> str:
+        """Return the Suburb for the fuel search"""
+        return self._suburb
+
+    @property
+    def day(self) -> str:
+        """Return the day of the fuel price"""
+        return self._day
+
+    def update(self) -> None:
+        """Fetch new state data for the sensor.
+        This is the only method that should fetch new data for Home Assistant.
+        """
+        self.api.query(product=self._fuel_type, suburb=self._suburb, day=self._day)
+        self.xml_query = self.api.get_xml
+        self._attr_native_value = self.xml_query[0]['address']
