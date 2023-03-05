@@ -29,10 +29,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     async_add_entities([
-        FuelPriceToday(hass, config),
-        StationName(hass, config),
-        StationLocation(hass, config),
-        StationAddress(hass, config)
+        FuelPrice(hass, config),
+        FuelStationName(hass, config),
+        FuelStationLocation(hass, config),
+        FuelStationAddress(hass, config)
     ])
 
 class FuelWatchSensor(SensorEntity):
@@ -76,7 +76,7 @@ class FuelWatchSensor(SensorEntity):
         self._attr_native_value = self.xml_query[0][self._xml_key]
 
 
-class FuelPriceToday(FuelWatchSensor):
+class FuelPrice(FuelWatchSensor):
     """Representation of a Sensor for the cheapest fuel price today."""
 
     _attr_native_unit_of_measurement = CURRENCY_CENT
@@ -87,43 +87,43 @@ class FuelPriceToday(FuelWatchSensor):
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Cheapest Fuel Price today",
+            attr_name="Fuel Cheapest Price",
             xml_key="price"
         )
 
 
-class StationName(FuelWatchSensor):
+class FuelStationName(FuelWatchSensor):
     """Representation of a Sensor for the station name."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Name",
+            attr_name="Fuel Station Name",
             xml_key="brand"
         )
 
 
-class StationLocation(FuelWatchSensor):
+class FuelStationLocation(FuelWatchSensor):
     """Representation of a Sensor for the station location."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Suburb",
+            attr_name="Fuel Station Suburb",
             xml_key="location"
         )
 
 
-class StationAddress(FuelWatchSensor):
+class FuelStationAddress(FuelWatchSensor):
     """Representation of a Sensor for the station address."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Address",
+            attr_name="Fuel Station Address",
             xml_key="address"
         )
 
