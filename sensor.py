@@ -28,27 +28,29 @@ async def async_setup_entry(
     discovery_info: DiscoveryInfoType | None = None
 ) -> None:
     """Set up the sensor platform."""
-    async_add_entities([FuelPriceToday(hass, config)])
+    async_add_entities([
+        FuelPriceToday(hass, config),
+        StationName(hass, config),
+        StationLocation(hass, config),
+        StationAddress(hass, config)
+    ])
 
+class FuelWatchSensor(SensorEntity):
+    """Base class for FuelWatch sensors."""
 
-class FuelPriceToday(SensorEntity):
-    """Representation of a Sensor."""
-
-    _attr_name = "Cheapest Fuel Price today"
-    _attr_native_unit_of_measurement = CURRENCY_CENT
-    _attr_device_class = SensorDeviceClass.MONETARY
-    _attr_state_class = SensorStateClass.MEASUREMENT
     api = FuelWatch()
 
-    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry, attr_name: str, xml_key: str):
         self._hass = hass
-        self._attr_unique_id = 'sensor.fuelwatchwa_pricetoday'
+        self._attr_name = attr_name
+        self._attr_unique_id = f"sensor.fuelwatchwa_{xml_key.lower()}"
         self.xml_query = None
         self._attr_native_value = None
 
         self._fuel_type = config_entries.data['product']
         self._suburb = config_entries.data['suburb']
         self._day = config_entries.data['day']
+        self._xml_key = xml_key
 
     @property
     def fuel_type(self) -> int:
@@ -69,7 +71,59 @@ class FuelPriceToday(SensorEntity):
         """Fetch new state data for the sensor.
         This is the only method that should fetch new data for Home Assistant.
         """
-        #self._attr_native_value = 161.9
         self.api.query(product=self._fuel_type, suburb=self._suburb, day=self._day)
         self.xml_query = self.api.get_xml
-        self._attr_native_value = self.xml_query[0]['price']
+        self._attr_native_value = self.xml_query[0][self._xml_key]
+
+
+class FuelPriceToday(FuelWatchSensor):
+    """Representation of a Sensor for the cheapest fuel price today."""
+
+    _attr_native_unit_of_measurement = CURRENCY_CENT
+    _attr_device_class = SensorDeviceClass.MONETARY
+    _attr_state_class = SensorStateClass.MEASUREMENT
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        super().__init__(
+            hass=hass,
+            config_entries=config_entries,
+            attr_name="Cheapest Fuel Price today",
+            xml_key="price"
+        )
+
+
+class StationName(FuelWatchSensor):
+    """Representation of a Sensor for the station name."""
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        super().__init__(
+            hass=hass,
+            config_entries=config_entries,
+            attr_name="Station Name",
+            xml_key="brand"
+        )
+
+
+class StationLocation(FuelWatchSensor):
+    """Representation of a Sensor for the station location."""
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        super().__init__(
+            hass=hass,
+            config_entries=config_entries,
+            attr_name="Station Suburb",
+            xml_key="location"
+        )
+
+
+class StationAddress(FuelWatchSensor):
+    """Representation of a Sensor for the station address."""
+
+    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
+        super().__init__(
+            hass=hass,
+            config_entries=config_entries,
+            attr_name="Station Address",
+            xml_key="address"
+        )
+
