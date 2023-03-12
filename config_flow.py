@@ -33,7 +33,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             # Validate User input.
-            # todo: add in validations
+            # TODO: add in validations
             valid = True
             if valid:
                 return self.async_create_entry(
