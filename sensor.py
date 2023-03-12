@@ -56,7 +56,7 @@ class FuelWatchSensor(SensorEntity):
     def fuel_type(self) -> int:
         """Return the Fuel Type specified"""
         return self._fuel_type
-    
+
     @property
     def suburb(self) -> str:
         """Return the Suburb for the fuel search"""
@@ -126,4 +126,3 @@ class FuelStationAddress(FuelWatchSensor):
             attr_name="Fuel Station Address",
             xml_key="address"
         )
-
