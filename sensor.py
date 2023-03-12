@@ -40,7 +40,14 @@ class FuelWatchSensor(SensorEntity):
 
     api = FuelWatch()
 
-    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry, attr_name: str, xml_key: str):
+    def __init__(
+            self,
+            hass: HomeAssistant,
+            config_entries: ConfigEntry,
+            attr_name: str,
+            xml_key: str
+        ):
+
         self._hass = hass
         self._attr_name = attr_name
         self._attr_unique_id = f"sensor.fuelwatchwa_{xml_key.lower()}"
