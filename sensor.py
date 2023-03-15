@@ -2,21 +2,19 @@
 from __future__ import annotations
 
 import logging
-import voluptuous as vol
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
-    SensorStateClass,
-    PLATFORM_SCHEMA
+    SensorStateClass
 )
 from homeassistant.const import CURRENCY_CENT
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.helpers.typing import DiscoveryInfoType
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 
-from fuelwatcher import FuelWatch, PRODUCT, REGION, BRAND, SUBURB
+from fuelwatcher import FuelWatch
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(DOMAIN)
@@ -29,10 +27,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     async_add_entities([
-        FuelPriceToday(hass, config),
-        StationName(hass, config),
-        StationLocation(hass, config),
-        StationAddress(hass, config)
+        FuelPrice(hass, config),
+        FuelStationName(hass, config),
+        FuelStationLocation(hass, config),
+        FuelStationAddress(hass, config)
     ])
 
 class FuelWatchSensor(SensorEntity):
@@ -40,7 +38,14 @@ class FuelWatchSensor(SensorEntity):
 
     api = FuelWatch()
 
-    def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry, attr_name: str, xml_key: str):
+    def __init__(
+            self,
+            hass: HomeAssistant,
+            config_entries: ConfigEntry,
+            attr_name: str,
+            xml_key: str
+        ):
+
         self._hass = hass
         self._attr_name = attr_name
         self._attr_unique_id = f"sensor.fuelwatchwa_{xml_key.lower()}"
@@ -56,7 +61,7 @@ class FuelWatchSensor(SensorEntity):
     def fuel_type(self) -> int:
         """Return the Fuel Type specified"""
         return self._fuel_type
-    
+
     @property
     def suburb(self) -> str:
         """Return the Suburb for the fuel search"""
@@ -76,7 +81,7 @@ class FuelWatchSensor(SensorEntity):
         self._attr_native_value = self.xml_query[0][self._xml_key]
 
 
-class FuelPriceToday(FuelWatchSensor):
+class FuelPrice(FuelWatchSensor):
     """Representation of a Sensor for the cheapest fuel price today."""
 
     _attr_native_unit_of_measurement = CURRENCY_CENT
@@ -87,43 +92,42 @@ class FuelPriceToday(FuelWatchSensor):
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Cheapest Fuel Price today",
+            attr_name="Fuel Cheapest Price",
             xml_key="price"
         )
 
 
-class StationName(FuelWatchSensor):
+class FuelStationName(FuelWatchSensor):
     """Representation of a Sensor for the station name."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Name",
+            attr_name="Fuel Station Name",
             xml_key="brand"
         )
 
 
-class StationLocation(FuelWatchSensor):
+class FuelStationLocation(FuelWatchSensor):
     """Representation of a Sensor for the station location."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Suburb",
+            attr_name="Fuel Station Suburb",
             xml_key="location"
         )
 
 
-class StationAddress(FuelWatchSensor):
+class FuelStationAddress(FuelWatchSensor):
     """Representation of a Sensor for the station address."""
 
     def __init__(self, hass: HomeAssistant, config_entries: ConfigEntry) -> None:
         super().__init__(
             hass=hass,
             config_entries=config_entries,
-            attr_name="Station Address",
+            attr_name="Fuel Station Address",
             xml_key="address"
         )
-

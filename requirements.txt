@@ -1,0 +1,4 @@
+pylint==2.17.0
+voluptuous
+homeassistant
+fuelwatcher
