@@ -1,0 +1,21 @@
+{
+    "title": "FuelWatch WA",
+    "config": {
+        "step": {
+            "user": {
+                "title": "Configure FuelWatch WA",
+                "description": "Adds the FuelWatch WA Integration",
+                "data": {
+                    "suburb": "Suburb",
+                    "product": "Product",
+                    "day": "Day"
+                },
+                "data_description": {
+                    "suburb": "The suburb that you want to use in FuelWatch WA.",
+                    "product": "The type of Fuel you wish to get information for.",
+                    "day": "Information for today or tomorrow."
+                }
+            }
+        }
+    }
+}
