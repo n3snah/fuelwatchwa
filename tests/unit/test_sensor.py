@@ -1,7 +1,9 @@
 from unittest.mock import MagicMock, Mock
 import pytest
 import asyncio
+import fuelwatchwa
 
+@pytest.mark.asyncio
 async def test_async_setup_entry():
     # create a mock HomeAssistant instance and ConfigEntry object
     hass = Mock()
