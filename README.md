@@ -36,6 +36,10 @@ To activate the virtual environment, run the following command:
 To ensure that all dependencies have been downloaded, run the following command:
 `pip install -r requirements.txt`
 
+## Translations
+As this is a custom component. all translations will need to be added into the translations directory.
+the `strings.json` should be identical to `translations/en.json`.
+
 
 ## Credits
 
