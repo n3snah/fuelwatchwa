@@ -40,6 +40,8 @@ To ensure that all dependencies have been downloaded, run the following command:
 As this is a custom component. all translations will need to be added into the translations directory.
 the `strings.json` should be identical to `translations/en.json`.
 
+## Limitations
+Currently, fuelwatchwa integration is limited to sensors for a single fuel type per installation. Multiple sensors may be supported in the future.
 
 ## Credits
 

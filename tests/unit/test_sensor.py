@@ -1,3 +1,4 @@
+'''Pytests for sensor'''
 from unittest.mock import MagicMock, Mock
 import pytest
 import asyncio
@@ -5,6 +6,7 @@ import fuelwatchwa
 
 @pytest.mark.asyncio
 async def test_async_setup_entry():
+    '''pytests for test_async_function_entry'''
     # create a mock HomeAssistant instance and ConfigEntry object
     hass = Mock()
     config = Mock()
@@ -25,6 +27,7 @@ async def test_async_setup_entry():
 
 @pytest.mark.asyncio
 async def test_fuelwatch_sensor_update():
+    '''pytests for test_fuelwatch_sensor_update'''
     # create a mock HomeAssistant instance and ConfigEntry object
     hass = Mock()
     config = Mock()
