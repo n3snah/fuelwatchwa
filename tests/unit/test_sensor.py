@@ -2,7 +2,7 @@
 from unittest.mock import MagicMock, Mock
 import pytest
 import asyncio
-import fuelwatchwa
+from fuelwatchwa import async_setup_entry
 
 @pytest.mark.asyncio
 async def test_async_setup_entry():

@@ -17,4 +17,4 @@ jobs:
         pip install -r requirements.txt
     - name: Analysing the code with pylint
       run:
-        find . -name '*.py' -exec pylint {} \;
+        find . -name '*.py' -not -path "*env/*" -exec pylint {} \;
