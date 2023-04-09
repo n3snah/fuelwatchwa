@@ -1,8 +1,8 @@
 '''Pytests for sensor'''
 from unittest.mock import MagicMock, Mock
-import pytest
 import asyncio
-from fuelwatchwa import async_setup_entry
+import pytest
+from . import fuelwatchwa, async_setup_entry, FuelWatchSensor
 
 @pytest.mark.asyncio
 async def test_async_setup_entry():
