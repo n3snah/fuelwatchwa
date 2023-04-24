@@ -1,6 +1,7 @@
 '''Pytests for sensor'''
 import sys
 import pytest
+from homeassistant.components.sensor import SensorEntity
 
 # Append parent directory to Python path
 sys.path.append("..")
@@ -13,8 +14,20 @@ class MockConfigEntry:
     def __init__(self, data):
         self.data = data
 
+class MockFuelWatch:
+    def __init__(self, xml):
+        self._xml = xml
+
+    @property
+    def get_xml(self):
+        return self._xml
+
+    @get_xml.setter
+    def get_xml(self, value):
+        self._xml = value
+
 class TestFuelWatchSensor:
-    def test_fuel_type():
+    def test_fuel_type(self):
         fuel_type = 1
         suburb = "Test Suburb"
         day = "Test Day"
@@ -62,6 +75,10 @@ class TestFuelWatchSensor:
         config_entries = MockConfigEntry({'product': fuel_type, 'suburb': suburb, 'day': day})
 
         fuel_watch_sensor = FuelWatchSensor(hass, config_entries, "attr_name", xml_key)
+
+        # Create a mock FuelWatch object and define a setter for get_xml property
+        fuel_watch_mock = MockFuelWatch([{"Test Key": "Test Value"}])
+        fuel_watch_sensor.api = fuel_watch_mock
 
         # Mock the FuelWatch API query and get_xml methods
         fuel_watch_sensor.api.query = lambda **kwargs: None
