@@ -16,16 +16,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     # Home Assistant will call your migrate method if the version changes
     VERSION = 1
 
-    def __init__(self):
-        """Initialize the Config flow for FuelWatch WA"""
-
     async def async_step_user(self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         '''Async User step for module'''
         errors = {}
 
-        STEP_USER_DATA_SCHEMA= {
-            #vol.Required("suburb", default="Kelmscott"): str
+        STEP_USER_DATA_SCHEMA = {
             vol.Required("suburb"): str,
             vol.Required("product"): int,
             vol.Required("day", default="today"): str
