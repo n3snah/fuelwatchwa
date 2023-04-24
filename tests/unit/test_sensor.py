@@ -1,7 +1,12 @@
 '''Pytests for sensor'''
 import sys
 import pytest
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorStateClass
+)
+from homeassistant.const import CURRENCY_CENT
 
 # Append parent directory to Python path
 sys.path.append("..")
@@ -27,6 +32,9 @@ class MockFuelWatch:
         self._xml = value
 
 class TestFuelWatchSensor:
+    def test_base(self):
+        assert hasattr(FuelWatchSensor, '__init__')
+
     def test_fuel_type(self):
         fuel_type = 1
         suburb = "Test Suburb"
@@ -90,17 +98,25 @@ class TestFuelWatchSensor:
         assert fuel_watch_sensor._attr_native_value == "Test Value"
 
 def test_FuelPrice():
-    assert isinstance(FuelPrice, type)
+    assert issubclass(FuelPrice, FuelWatchSensor)
     assert hasattr(FuelPrice, '__init__')
+    assert hasattr(FuelPrice, '_attr_native_unit_of_measurement')
+    assert FuelPrice._attr_native_unit_of_measurement == CURRENCY_CENT  # Check the expected value
+
+    assert hasattr(FuelPrice, '_attr_device_class')
+    assert FuelPrice._attr_device_class == SensorDeviceClass.MONETARY  # Check the expected value
+
+    assert hasattr(FuelPrice, '_attr_state_class')
+    assert FuelPrice._attr_state_class == SensorStateClass.MEASUREMENT  # Check the expected value
 
 def test_FuelStationName():
-    assert isinstance(FuelStationName, type)
+    assert issubclass(FuelStationName, FuelWatchSensor)
     assert hasattr(FuelStationName, '__init__')
 
 def test_FuelStationLocation():
-    assert isinstance(FuelStationLocation, type)
+    assert issubclass(FuelStationLocation, FuelWatchSensor)
     assert hasattr(FuelStationLocation, '__init__')
 
 def test_FuelStationAddress():
-    assert isinstance(FuelStationAddress, type)
+    assert issubclass(FuelStationAddress, FuelWatchSensor)
     assert hasattr(FuelStationAddress, '__init__')
