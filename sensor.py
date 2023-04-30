@@ -48,7 +48,6 @@ class FuelWatchSensor(SensorEntity):
 
         self._hass = hass
         self._attr_name = attr_name
-        self._attr_unique_id = f"sensor.fuelwatchwa_{xml_key.lower()}"
         self.xml_query = None
         self._attr_native_value = None
 
@@ -107,6 +106,7 @@ class FuelStationName(FuelWatchSensor):
             attr_name="Fuel Station Name",
             xml_key="brand"
         )
+        self.attr_unique_id="%s%s%sbrand"%(self._day, self._suburb, self._fuel_type),
 
 
 class FuelStationLocation(FuelWatchSensor):
@@ -119,6 +119,7 @@ class FuelStationLocation(FuelWatchSensor):
             attr_name="Fuel Station Suburb",
             xml_key="location"
         )
+        self.attr_unique_id="%s%s%slocation"%(self._day, self._suburb, self._fuel_type),
 
 
 class FuelStationAddress(FuelWatchSensor):
@@ -131,3 +132,4 @@ class FuelStationAddress(FuelWatchSensor):
             attr_name="Fuel Station Address",
             xml_key="address"
         )
+        self.attr_unique_id="%s%s%saddress"%(self._day, self._suburb, self._fuel_type),
